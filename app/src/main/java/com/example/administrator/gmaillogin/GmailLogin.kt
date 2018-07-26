@@ -17,25 +17,20 @@ class GmailLogin {
                 .build()
         mGoogleSignInClient = GoogleSignIn.getClient(activity, gso)
 
-        val account = GoogleSignIn.getLastSignedInAccount(activity.applicationContext)
+      //  val account = GoogleSignIn.getLastSignedInAccount(activity.applicationContext)
+
+
     }
 
     fun GetData(): MutableMap<String, String>? {
+
         val signInIntent = mGoogleSignInClient!!.signInIntent
 
-        val task = GoogleSignIn.getLastSignedInAccount(activity.baseContext)
+        //val task = GoogleSignIn.getLastSignedInAccount(activity.baseContext)
 
-        var data: MutableMap<String, String> = mutableMapOf()
-        data.put("displayName", task!!.displayName!!)
-        data.put("familyName", task!!.familyName!!)
-        data.put("givenName", task!!.givenName!!)
-        data.put("accountName", task!!.account!!.name)
-        data.put("accountType", task!!.account!!.type!!)
-        data.put("email", task!!.email!!)
-        data.put("id", task!!.id!!)
-        data.put("photoUrl", task!!.photoUrl.toString()!!)
+        activity.startActivityForResult(signInIntent,0)
 
-        return data
+        return null
     }
 
 

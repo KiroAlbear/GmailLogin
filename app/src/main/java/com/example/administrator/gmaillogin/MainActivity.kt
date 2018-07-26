@@ -24,22 +24,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build()
-        var mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        val account = GoogleSignIn.getLastSignedInAccount(this)
-
-        var gmailLogin: GmailLogin = GmailLogin(this)
-        var data = gmailLogin.GetData()
-        var datastr: String = ""
+        var gmailLogin = GmailLogin(this)
         google_sign.setOnClickListener(View.OnClickListener {
 
-            for (i in gmailLogin.GetData()!!) {
-                datastr += i.key + " : " + i.value + "\n"
-            }
-            textView.text = datastr
+            gmailLogin.GetData()
+
         })
 
 
@@ -47,6 +37,25 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // super.onActivityResult(requestCode, resultCode, data)
+        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+
+
+        var data: MutableMap<String, String> = mutableMapOf()
+        data.put("displayName", task!!.result.displayName!!)
+        data.put("familyName", task!!.result.familyName!!)
+        data.put("givenName", task!!.result.givenName!!)
+        data.put("accountName", task.result!!.account!!.name)
+        data.put("accountType", task!!.result.account!!.type!!)
+        data.put("email", task!!.result.email!!)
+        data.put("id", task!!.result.id!!)
+        data.put("photoUrl", task!!.result.photoUrl.toString()!!)
+
+        var datastr=""
+        for (i in data){
+            datastr+= i.key+" :"+i.value+"\n"
+        }
+        textView.text=datastr
+
         // handleSignInResult(task)
     }
 
