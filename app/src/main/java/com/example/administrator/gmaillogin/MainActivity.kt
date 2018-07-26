@@ -17,12 +17,6 @@ import android.util.Log
 import com.google.android.gms.common.api.ApiException
 
 
-
-
-
-
-
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,26 +27,27 @@ class MainActivity : AppCompatActivity() {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build()
-       var  mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
+        var mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
         val account = GoogleSignIn.getLastSignedInAccount(this)
 
+        var gmailLogin: GmailLogin = GmailLogin(this)
+        var data = gmailLogin.GetData()
+        var datastr: String = ""
         google_sign.setOnClickListener(View.OnClickListener {
-            val signInIntent = mGoogleSignInClient.signInIntent
-            startActivityForResult(signInIntent,1)
 
+            for (i in gmailLogin.GetData()!!) {
+                datastr += i.key + " : " + i.value + "\n"
+            }
+            textView.text = datastr
         })
-
 
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-       // super.onActivityResult(requestCode, resultCode, data)
-        val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-
-        textView.text=task.result.email
-       // handleSignInResult(task)
+        // super.onActivityResult(requestCode, resultCode, data)
+        // handleSignInResult(task)
     }
 
 }
